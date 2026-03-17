@@ -39,6 +39,18 @@
   ]
 }
 
+/// PULP color palette — each entry is a dict with `base`, `light`, and `very-light` variants.
+#let pulp-colors = (
+  red:    (base: rgb("#A8322C"), light: rgb("#A8322CC8"), very-light: rgb("#A8322C96")),
+  blue:   (base: rgb("#1269B0"), light: rgb("#1269B0C8"), very-light: rgb("#1269B096")),
+  green:  (base: rgb("#168638"), light: rgb("#168638C8"), very-light: rgb("#16863896")),
+  orange: (base: rgb("#F29545"), light: rgb("#F29545C8"), very-light: rgb("#F2954596")),
+  purple: (base: rgb("#910569"), light: rgb("#910569C8"), very-light: rgb("#91056996")),
+  olive:  (base: rgb("#48592C"), light: rgb("#48592CC8"), very-light: rgb("#48592C96")),
+  marine: (base: rgb("#007996"), light: rgb("#007996C8"), very-light: rgb("#00799696")),
+  gray:   (base: rgb("#ABABAB"), light: rgb("#ABABABC8"), very-light: rgb("#ABABAB96")),
+)
+
 /// ETH header with logo on the left and institute name on the right
 #let eth-header = grid(
   columns: (auto, 1fr),
