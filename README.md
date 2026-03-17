@@ -5,10 +5,11 @@ Typst templates for student theses and task descriptions at the
 
 ## Templates
 
-| Template | Description |
-|---|---|
-| `templates/thesis.typ` | Master thesis / semester project report |
-| `templates/assignment.typ` | Assignment description handed to students |
+| Template | Description | Audience |
+|---|---|---|
+| `templates/thesis.typ` | Master thesis / semester project report | Students |
+| `templates/assignment.typ` | Assignment description handed to students | Advisors |
+| `templates/research_plan.typ` | PhD research plan (first-year report) | PhD students |
 
 ## Getting Started
 
@@ -91,13 +92,10 @@ such as the signed declaration of originality:
 declaration-of-originality: include-pdf("/figures/declaration.pdf"),
 ```
 
-## Assignment Description
+## For Advisors and PhD Students
 
-Advisors can compile the assignment description handed to students:
-
-```sh
-typst compile --root . examples/assignment.typ
-```
+- **Assignment description** (`templates/assignment.typ`): handed to students at the start of a project. See `examples/assignment.typ` for a working example.
+- **Research plan** (`templates/research_plan.typ`): written by PhD candidates at the end of their first year, covering motivation, completed work, project definition, and a tentative timeline. See `examples/research_plan.typ` for a working example.
 
 ## License
 
