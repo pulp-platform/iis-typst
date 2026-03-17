@@ -57,10 +57,5 @@
   rows: (80pt),
   align: (horizon, horizon + right),
   image("figures/eth_logo_kurz_pos.svg", height: 80%),
-  block[
-    #set align(left)
-    #set text(size: 12pt, weight: "semibold")
-    Integrated Systems Laboratory\
-    Institut für Integrierte Systeme
-  ],
+  image("figures/iis-header.svg", height: 2.4em),
 )
