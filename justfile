@@ -1,3 +1,9 @@
+# Copyright 2026 ETH Zurich and University of Bologna.
+# Licensed under the Apache License, Version 2.0, see LICENSE for details.
+# SPDX-License-Identifier: Apache-2.0
+#
+# Author: Tim Fischer <fischeti@iis.ee.ethz.ch>
+
 packages := "dissertation thesis research-plan assignment"
 
 # List available recipes
@@ -40,7 +46,7 @@ fmt:
     typstyle -i **/*.typ
 
 # Initialize a template locally (typst init equivalent)
-init pkg dir=pkg:
+init pkg dir="pkg":
     typst init --package-path packages @preview/ethz-iis-{{pkg}}:0.1.0 {{dir}}
 
 # Bump the version of a package (level: patch, minor, or major)
