@@ -6,16 +6,16 @@
 //
 // An IIS Assignment Template for Typst
 
-#import "assignment_appendix.typ": assignment_appendix
+#import "appendix.typ": appendix
 #import "shared/utils.typ": fieldpar, current-semester, eth-header
 
 // The possible thesis types
-#let thesis_types = ("group", "semester", "bachelor", "master")
+#let thesis-types = ("group", "semester", "bachelor", "master")
 
 // Helper function to return duration of a thesis.
 // Note: duration does not accept months, and master thesis
 // is calculated as 6 x 4 weeks
-#let thesis_duration(projecttype) = {
+#let thesis-duration(projecttype) = {
     if lower(projecttype) == "master" {
         duration(weeks: 24)
     } else {
@@ -56,7 +56,7 @@
 
   // Validate that project type is valid...
   if projecttype != none {
-      assert(projecttype in thesis_types)
+      assert(projecttype in thesis-types)
   }
   // ... or notify user
   if projecttype == none {
@@ -65,7 +65,7 @@
 
   // If due date is not specified, calculate it
   if duedate == none and projecttype != none {
-    duedate = handoutdate + thesis_duration(projecttype)
+    duedate = handoutdate + thesis-duration(projecttype)
   }
 
   // General page, typography settings
@@ -151,7 +151,7 @@
 
   // The appendix with general guidelines and information about
   // the project realization, meetings, reports, etc.
-  assignment_appendix(projecttype)
+  appendix(projecttype)
 
   // Print the bibliography (if provided)
   if bibliography != none {

@@ -6,7 +6,7 @@
 //
 // Boilerplate appendix sections appended to every IIS assignment.
 
-#let assignment_appendix(projecttype) = [
+#let appendix(projecttype) = [
   == Meetings
 
   Weekly meetings will be held between the student and the assistants.
