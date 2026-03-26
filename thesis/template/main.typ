@@ -10,7 +10,7 @@
 #import "@preview/finite:0.5.1": automaton
 
 #show: thesis.with(
-  title: "A Comprehensive Study of Integrated Systems",
+  title: "Title of the Thesis",
   author: "Student Name",
   email: "student@iis.ee.ethz.ch",
   reporttype: "Master Thesis",
@@ -21,17 +21,8 @@
   professors: (
     (name: "Prof. Dr. P. Professor", mail: "professor@iis.ee.ethz.ch"),
   ),
-  acknowledgements: [
-    I would like to thank my supervisors for their guidance and support throughout this project.
-    Special thanks to the Integrated Systems Laboratory for providing the resources necessary
-    to complete this work.
-  ],
-  abstract: [
-    This thesis presents a comprehensive study of integrated systems design at ETH Zurich's
-    Integrated Systems Laboratory. We explore novel approaches to hardware architecture,
-    implementation, and verification. Our results demonstrate significant improvements over
-    the state of the art in terms of performance and energy efficiency.
-  ],
+  acknowledgements: lorem(50),
+  abstract: lorem(50),
   logo: automaton(
     (q0: (q1: ""), q1: (q2: ""), q2: (q3: ""), q3: none),
     labels: (q0: "L", q1: "O", q2: "G", q3: "O"),
