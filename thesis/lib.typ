@@ -136,6 +136,7 @@
       align(center, {
         smallcaps(text(size: 12pt)[
           Department of Information Technology and Electrical Engineering\
+          Integrated Systems Laboratory\
           #semester
         ])
         v(2em)

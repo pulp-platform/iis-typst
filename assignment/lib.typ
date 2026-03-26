@@ -105,7 +105,7 @@
       align(center, smallcaps(text(size: 14pt)[
         Assignment for a\
         #text(size: 24pt)[#projecttype thesis]\
-        at the Department of\ Information Technology and Electrical Engineering\
+        at the Integrated Systems Laboratory\
         #v(1em)
         #semester
       ]))

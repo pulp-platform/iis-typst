@@ -94,11 +94,21 @@
   ),
 )
 
-/// ETH header with logo on the left and institute name on the right
+/// D-ITET department badge, recreated in Typst (no official SVG available).
+/// Matches the ETH corporate style: black filled box with white "D" + bold "ITET".
+#let ditet-logo(height: 2em) = {
+  set text(font: "Helvetica", weight: "bold", size: height)
+  box(fill: black, inset: (x: 0.2em, y: 0.15em), text(fill: white, "D"))
+  h(0.3em)
+  text(fill: black, "ITET")
+}
+
+/// ETH header with ETH logo on the left and PULP logo on the right.
 #let eth-header = grid(
-  columns: (auto, 1fr),
+  columns: (auto, 1fr, auto),
   rows: 80pt,
-  align: (horizon, horizon + right),
+  align: (left + horizon, horizon, right + horizon),
   image("figures/eth_logo_kurz_pos.svg", height: 80%),
-  image("figures/iis-header.svg", height: 2.4em),
+  [],
+  image("figures/pulp_logo_inline.svg", height: 3.2em),
 )
