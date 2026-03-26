@@ -38,4 +38,4 @@ Users must comply with [ETH Zürich's branding guidelines](https://ethz.ch/en/th
 
 ## License
 
-Apache-2.0 — Copyright 2026 ETH Zurich and University of Bologna.
+Apache-2.0 — Copyright 2026 ETH Zurich.
