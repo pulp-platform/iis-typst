@@ -15,6 +15,9 @@
 )
 #import "@preview/gentle-clues:1.3.1": code, task
 
+/// The Typst Quick Guide appendix, ready to drop into the appendices array.
+#let typst-guide = include "shared/typst-guide.typ"
+
 /// The IIS Thesis template
 #let thesis(
   /// The title of the thesis

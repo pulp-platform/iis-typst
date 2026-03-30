@@ -259,13 +259,18 @@ content block whose first line should be a level-1 heading:
 )
 ```]
 
-To include this guide alongside your own appendices, add it explicitly:
+To include this guide alongside your own appendices, import `typst-guide` from
+the package and add it to the array:
 
-#code[```typc
-appendices: (
-  include "/chapters/appendix.typ",
-  include "@preview/ethz-iis-thesis:1.0.0/shared/typst-guide.typ",
-),
+#code[```typ
+#import "@preview/ethz-iis-thesis:1.0.0": thesis, acr, acrpl, typst-guide
+
+#show: thesis.with(
+  appendices: (
+    include "/chapters/appendix.typ",
+    typst-guide,
+  ),
+)
 ```]
 
 To omit all appendices, pass an empty array:
