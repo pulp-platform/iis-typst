@@ -53,6 +53,10 @@ init pkg dir="pkg":
 bump pkg level="patch":
     python3 scripts/bump.py {{pkg}} {{level}}
 
+# Copy all packages into a local fork of typst/packages
+prepare-all fork:
+    @for pkg in {{packages}}; do just prepare $pkg {{fork}}; done
+
 # Copy a package into a local fork of typst/packages, resolving symlinks in the process.
 # Usage: just prepare dissertation /path/to/typst-packages
 prepare pkg fork:
