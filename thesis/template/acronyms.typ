@@ -1,9 +1,3 @@
-// Copyright 2026 ETH Zurich.
-// Licensed under the Apache License, Version 2.0, see LICENSE for details.
-// SPDX-License-Identifier: Apache-2.0
-//
-// Author: Tim Fischer <fischeti@iis.ee.ethz.ch>
-
 // List of acronyms used in the thesis.
 // Pass this to the thesis template via: #show: thesis.with(acronyms: acronyms)
 // Usage in text: #acr("IIS"), #acrpl("FPGA"), #acrfull("ASIC")

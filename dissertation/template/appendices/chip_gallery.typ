@@ -1,9 +1,3 @@
-// Copyright 2026 ETH Zurich.
-// Licensed under the Apache License, Version 2.0, see LICENSE for details.
-// SPDX-License-Identifier: Apache-2.0
-//
-// Author: Tim Fischer <fischeti@iis.ee.ethz.ch>
-//
 // Chip Gallery appendix — one chip-entry call per chip.
 // Add chips in reverse chronological order (most recent first).
 

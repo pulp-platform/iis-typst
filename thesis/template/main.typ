@@ -1,9 +1,3 @@
-// Copyright 2026 ETH Zurich.
-// Licensed under the Apache License, Version 2.0, see LICENSE for details.
-// SPDX-License-Identifier: Apache-2.0
-//
-// Author: Tim Fischer <fischeti@iis.ee.ethz.ch>
-
 #import "@preview/ethz-iis-thesis:1.0.0": *
 #import "acronyms.typ": acronyms
 #import "@preview/cetz:0.4.2": canvas, draw

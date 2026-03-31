@@ -1,9 +1,3 @@
-// Copyright 2026 ETH Zurich.
-// Licensed under the Apache License, Version 2.0, see LICENSE for details.
-// SPDX-License-Identifier: Apache-2.0
-//
-// Author: Tim Fischer <fischeti@iis.ee.ethz.ch>
-
 #import "@preview/ethz-iis-research-plan:1.0.0": *
 #import "@preview/ethz-iis-research-plan:1.0.0": pulp-colors
 #import "@preview/acrostiche:0.7.0": acr, acrpl, init-acronyms
