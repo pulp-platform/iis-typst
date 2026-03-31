@@ -16,8 +16,8 @@ jobs:
   reuse:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: fsfe/reuse-action@v4
+      - uses: actions/checkout@v6
+      - uses: fsfe/reuse-action@v6
 
   compile:
     name: Compile (${{ matrix.package }})
@@ -27,8 +27,8 @@ jobs:
       matrix:
         package: [dissertation, thesis, research-plan, assignment]
     steps:
-      - uses: actions/checkout@v4
-      - uses: typst-community/setup-typst@v4
+      - uses: actions/checkout@v6
+      - uses: typst-community/setup-typst@v5
 
       - name: Compile template
         run: typst compile --package-path packages ${{ matrix.package }}/template/main.typ
@@ -37,7 +37,7 @@ jobs:
     name: Format check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: typstyle-rs/typstyle-action@main
         with:
           opts: --check
