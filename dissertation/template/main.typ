@@ -43,7 +43,10 @@
     typst-guide,
   ),
   cv: include "cv.typ",
-  show-copyright-notice: true,
+  // `auto` shows a reminder page about reuse permissions. Once addressed, set
+  // this to the bundled `ieee-reprint-notice` (import it above), your own
+  // content, or `none` if the thesis contains no reprinted material.
+  copyright-notice: auto,
 )
 
 // Main body — one include per chapter

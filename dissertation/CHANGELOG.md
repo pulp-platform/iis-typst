@@ -7,8 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `ieee-reprint-notice`: bundled, ready-to-use IEEE reprint statement for ETH
+  Zurich theses. Pass it to `copyright-notice` instead of hand-writing the text.
+
 ### Changed
 
+- Replaced the boolean `show-copyright-notice` with a tri-state `copyright-notice`
+  parameter: `auto` (default) shows the reminder page, content renders that notice
+  as a front-matter page, and `none` omits it entirely.
 - Removed copyright headers from template starter files.
 
 ## v1.0.0 — 2026-03-31
