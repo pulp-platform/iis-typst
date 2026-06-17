@@ -7,10 +7,7 @@
 // ETH Zurich IIS PhD Thesis Template for Typst
 
 #import "shared/utils.typ": fieldpar, include-pdf, placeholder, pulp-colors
-#import "@preview/acrostiche:0.7.0": (
-  acr, acrfull, acrpl, init-acronyms, print-index, reset-acronym,
-  reset-all-acronyms,
-)
+#import "@preview/acrostiche:0.7.0": acr, acrfull, acrpl, init-acronyms, print-index, reset-acronym, reset-all-acronyms
 #import "@preview/gentle-clues:1.3.1": task
 
 #let placeholder = placeholder.with(template: "dissertation")
@@ -21,6 +18,26 @@
 /// State holding an optional short chapter title for the running header.
 /// Set via the exported `chapter` helper; reset automatically after each heading.
 #let chapter-short = state("dissertation-chapter-short", none)
+
+/// Ready-made IEEE reprint statement for ETH Zurich theses. Required by IEEE
+/// when reprinted IEEE material is posted online. Drop it straight into the
+/// `copyright-notice` parameter: `copyright-notice: ieee-reprint-notice`.
+/// Per-chapter "© <year> IEEE. Reprinted, with permission, from …" credits are
+/// added separately by the author at each reprinted chapter or figure.
+#let ieee-reprint-notice = [
+  In reference to IEEE copyrighted material which is used with permission in
+  this thesis, the IEEE does not endorse any of ETH Zurich's products or
+  services. Internal or personal use of this material is permitted. If
+  interested in reprinting/republishing IEEE copyrighted material for
+  advertising or promotional purposes or for creating new collective works for
+  resale or redistribution, please go to
+  #link(
+    "http://www.ieee.org/publications_standards/publications/rights/rights_link.html",
+  )
+  to learn how to obtain a License from RightsLink. If applicable, University
+  Microfilms and/or ProQuest Library, or the Archives of Canada may supply
+  single copies of the dissertation.
+]
 
 /// The IIS PhD Thesis template, following ETH Zurich doctoral regulations.
 #let dissertation(
@@ -68,9 +85,16 @@
   appendices: (),
   /// Curriculum vitae content. Pass content directly or via `include "cv.typ"`.
   cv: none,
-  /// Show a copyright reminder page after the abstracts (default: true).
-  /// Set to `false` once you have added all required copyright notices.
-  show-copyright-notice: true,
+  /// Copyright notice for reprinted material, rendered as its own front-matter
+  /// page after the abstracts. Three states:
+  /// - `auto` (default): show a reminder page nudging you to address reuse
+  ///   permissions for any reprinted papers, figures, or tables.
+  /// - content: render this notice. For IEEE, pass the bundled
+  ///   `ieee-reprint-notice`; for other publishers pass your own content or
+  ///   `include "…"`. Per-chapter "© <year> IEEE. Reprinted, …" credits are
+  ///   added separately at each reprinted chapter or figure.
+  /// - `none`: no page — use this when the thesis contains no reprinted material.
+  copyright-notice: auto,
   /// Main body — chapters included via `#include` calls after the show rule.
   body,
 ) = {
@@ -113,14 +137,12 @@
     }
     let short = chapter-short.at(h1.location())
     let chapter-title = (
-      [#chapter-label #chapter-num: ]
-        + if short != none { short } else { h1.body }
+      [#chapter-label #chapter-num: ] + if short != none { short } else { h1.body }
     )
     let section-title = if h2s.len() > 0 {
       let h2 = h2s.last()
       (
-        [#numbering(h2.numbering, ..counter(heading).at(h2.location())) ]
-          + h2.body
+        [#numbering(h2.numbering, ..counter(heading).at(h2.location())) ] + h2.body
       )
     } else { [] }
     let is-odd = calc.odd(pg)
@@ -331,7 +353,7 @@
     })
   }
 
-  if show-copyright-notice {
+  if copyright-notice == auto {
     page({
       task(title: "Copyright Notices for Reprinted Material")[
         If any chapter of this thesis is based on or reprints a previously published
@@ -347,8 +369,9 @@
           IEEE Trans. VLSI Syst., 2022._],
         )
 
-        *For an entire paper reprinted as a chapter*, add the following once in the
-        bibliography/references section:
+        *For an entire paper reprinted as a chapter*, add the bundled blanket
+        statement once as a front-matter page and a per-chapter credit at the
+        chapter opening:
         #block(
           inset: (left: 1em),
           [_© 2023 IEEE. Reprinted, with permission, from
@@ -365,9 +388,15 @@
         + Select *"Thesis / Dissertation"* as the reuse type.
         + Follow the steps — IEEE will generate the exact wording to use.
 
-        Once all copyright notices have been added, disable this page by setting
-        `show-copyright-notice: false` in the template parameters.
+        Once addressed, replace this page: set `copyright-notice` to the bundled
+        `ieee-reprint-notice` (or your own content), or to `none` if this thesis
+        contains no reprinted material.
       ]
+    })
+  } else if copyright-notice != none {
+    page({
+      show heading: set heading(numbering: none, outlined: false)
+      copyright-notice
     })
   }
 
