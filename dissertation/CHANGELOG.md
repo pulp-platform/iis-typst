@@ -19,6 +19,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   as a front-matter page, and `none` omits it entirely.
 - Removed copyright headers from template starter files.
 
+### Fixed
+
+- Removed extra blank pages around front-matter sections (acknowledgements,
+  abstracts, copyright notice).
+
 ## v1.0.0 — 2026-03-31
 
 Initial release on [Typst Universe](https://typst.app/universe/package/ethz-iis-dissertation).

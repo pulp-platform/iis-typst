@@ -321,7 +321,12 @@
   if mode == "series" { series-title-page() } else { official-title-page() }
   counter(page).update(1)
 
-  page({
+  // Front-matter sections rely on the level-1 heading rule's
+  // `pagebreak(weak: true, to: "odd")` to open on a recto page, so each is a
+  // plain block (not `page(…)`) — wrapping in `page(…)` would stack a second
+  // page break on top of the heading's and leave extra blank pages. Sections
+  // without a heading (placeholders, copyright notice) get an explicit break.
+  {
     show heading: set heading(numbering: none, outlined: false)
     if acknowledgements != none {
       acknowledgements
@@ -333,28 +338,30 @@
         snippet: "acknowledgements: include \"chapters/00_acknowledgements.typ\",",
       )
     }
-  })
+  }
 
   if abstracts.len() > 0 {
     for abstract in abstracts {
-      page({
+      {
         show heading: set heading(numbering: none, outlined: false)
         abstract
-      })
+      }
     }
   } else {
-    page({
+    {
+      pagebreak(weak: true, to: "odd")
       show heading: set heading(numbering: none, outlined: false)
       placeholder(
         title: "Add Abstracts",
         description: [Provide at least an English abstract. Each file should start with its own heading (e.g. `= Abstract` or `= Zusammenfassung`).],
         snippet: "abstracts: (\n    include \"chapters/00_abstract_en.typ\",\n    include \"chapters/00_abstract_de.typ\",\n  ),",
       )
-    })
+    }
   }
 
   if copyright-notice == auto {
-    page({
+    {
+      pagebreak(weak: true, to: "odd")
       task(title: "Copyright Notices for Reprinted Material")[
         If any chapter of this thesis is based on or reprints a previously published
         paper, copyright notices are required by the publisher. For *IEEE publications*:
@@ -392,12 +399,13 @@
         `ieee-reprint-notice` (or your own content), or to `none` if this thesis
         contains no reprinted material.
       ]
-    })
+    }
   } else if copyright-notice != none {
-    page({
+    {
+      pagebreak(weak: true, to: "odd")
       show heading: set heading(numbering: none, outlined: false)
       copyright-notice
-    })
+    }
   }
 
   {
