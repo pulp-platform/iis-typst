@@ -7,7 +7,10 @@
 // ETH Zurich IIS PhD Thesis Template for Typst
 
 #import "shared/utils.typ": fieldpar, include-pdf, placeholder, pulp-colors
-#import "@preview/acrostiche:0.7.0": acr, acrfull, acrpl, init-acronyms, print-index, reset-acronym, reset-all-acronyms
+#import "@preview/acrostiche:0.7.0": (
+  acr, acrfull, acrpl, init-acronyms, print-index, reset-acronym,
+  reset-all-acronyms,
+)
 #import "@preview/gentle-clues:1.3.1": task
 
 #let placeholder = placeholder.with(template: "dissertation")
@@ -137,12 +140,14 @@
     }
     let short = chapter-short.at(h1.location())
     let chapter-title = (
-      [#chapter-label #chapter-num: ] + if short != none { short } else { h1.body }
+      [#chapter-label #chapter-num: ]
+        + if short != none { short } else { h1.body }
     )
     let section-title = if h2s.len() > 0 {
       let h2 = h2s.last()
       (
-        [#numbering(h2.numbering, ..counter(heading).at(h2.location())) ] + h2.body
+        [#numbering(h2.numbering, ..counter(heading).at(h2.location())) ]
+          + h2.body
       )
     } else { [] }
     let is-odd = calc.odd(pg)
