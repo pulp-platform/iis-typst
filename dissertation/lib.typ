@@ -186,9 +186,14 @@
   // Track whether the last block-level element was a non-paragraph, used by
   // the level-4 show rule to decide whether to cancel first-line-indent.
   let after-block = state("dissertation-after-block", true)
+  // Update *after* `it`: a run-in level-4 heading merges into the following
+  // paragraph, so this rule wraps it. Updating before `it` would clobber the
+  // state before the heading reads it, making every level-4 heading think it
+  // follows a paragraph. Updating after lets the heading see the preceding
+  // element's value instead.
   show par: it => {
-    after-block.update(false)
     it
+    after-block.update(false)
   }
 
   // Level 1: gray number + gray vertical rule + unjustified title
@@ -234,7 +239,8 @@
     after-block.update(true)
   }
   // Level 4: inline paragraph heading — bold text followed by em-space.
-  // TODO(fischeti): This does not work for all paragraphs for some reason.
+  // Cancel the first-line indent only when the heading runs into an indented
+  // paragraph (i.e. it follows another paragraph, not a block-level element).
   show heading.where(level: 4): it => {
     context if not after-block.get() { h(-par-indent) }
     text(weight: "bold", it.body)

@@ -26,6 +26,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Removed extra blank pages around front-matter sections (acknowledgements,
   abstracts, copyright notice).
+- Run-in (level-4) headings that directly follow a section heading are no longer
+  pulled into the inside margin. The first-line-indent is now cancelled only when
+  the heading actually runs into an indented paragraph.
 
 ## v1.0.0 — 2026-03-31
 
