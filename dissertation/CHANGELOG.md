@@ -18,6 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   parameter: `auto` (default) shows the reminder page, content renders that notice
   as a front-matter page, and `none` omits it entirely.
 - Removed copyright headers from template starter files.
+- Figure and table captions still default to left alignment but no longer force
+  it, so an individual figure can override it with
+  `show figure.caption: set align(center)` (useful for wide, rotated tables).
 
 ### Fixed
 

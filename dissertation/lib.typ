@@ -430,7 +430,7 @@
   show figure.caption: cap => context {
     let ch = counter(heading).get().first()
     let n = cap.counter.get().first()
-    align(left, [#cap.supplement #ch.#n#cap.separator #cap.body])
+    [#cap.supplement #ch.#n#cap.separator #cap.body]
   }
   show ref: r => context {
     let el = r.element
