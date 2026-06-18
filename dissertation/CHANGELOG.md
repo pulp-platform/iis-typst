@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Reworked render modes around the output medium: `mode` is now `"digital"`
+  (default) or `"booklet"`, replacing `"official"`/`"series"`. `"digital"` uses
+  symmetric margins, drops blank filler pages, keeps clickable blue links, and a
+  fixed running header; `"booklet"` keeps mirrored binding margins, recto section
+  starts (blank versos where needed), black links, and the alternating header.
+  Both modes keep the same 108 mm content width.
 - Replaced the boolean `show-copyright-notice` with a tri-state `copyright-notice`
   parameter: `auto` (default) shows the reminder page, content renders that notice
   as a front-matter page, and `none` omits it entirely.
@@ -29,6 +35,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Run-in (level-4) headings that directly follow a section heading are no longer
   pulled into the inside margin. The first-line-indent is now cancelled only when
   the heading actually runs into an indented paragraph.
+
+### Removed
+
+- The Hartung-Gorre "series" render mode and its `volume`, `isbn`, `isbn-long`,
+  and `published` parameters, along with the series title page (Series in
+  Microelectronics / ISBN / ISSN).
 
 ## v1.0.0 — 2026-03-31
 

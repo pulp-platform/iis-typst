@@ -60,16 +60,13 @@
   co-examiners: (),
   /// Year of acceptance by the Department Conference.
   year: datetime.today().year(),
-  /// Render mode: "official" (examination copy) or "series" (Hartung-Gorre publication).
-  mode: "official",
-  /// Series volume number (series mode only).
-  volume: none,
-  /// ISBN-10 (series mode only).
-  isbn: none,
-  /// ISBN-13 (series mode only).
-  isbn-long: none,
-  /// Publication year for series page (defaults to `year` when omitted).
-  published: none,
+  /// Render mode, controlling layout for the output medium:
+  /// - `"digital"` (default): single-stream PDF for the research collection.
+  ///   Symmetric margins, no blank filler pages, and clickable blue links.
+  /// - `"booklet"`: print-ready copy. Mirrored binding margins, chapters and
+  ///   front-matter sections opening on recto (odd) pages with a blank verso
+  ///   where parity requires it, and black links.
+  mode: "digital",
   /// Abstracts array. Each entry is content (typically an `include` call).
   /// The heading is defined inside each file itself.
   /// Example: abstracts: (
@@ -111,6 +108,18 @@
   if year == none { year = fieldpar[20XX] }
   init-acronyms(acronyms)
 
+  // Mode
+  // ────
+  let booklet = mode == "booklet"
+  // Open a major section on a fresh page. In booklet mode, force a recto (odd)
+  // page so chapters and front-matter sections start on the right, inserting a
+  // blank verso when needed; in digital mode, just break to the next page.
+  let open-section() = if booklet {
+    pagebreak(weak: true, to: "odd")
+  } else {
+    pagebreak(weak: true)
+  }
+
   // Header
   // ──────
   let show-header = state("phd-show-header", false)
@@ -150,13 +159,19 @@
           + h2.body
       )
     } else { [] }
-    let is-odd = calc.odd(pg)
-    align(
-      if is-odd { right } else { left },
-      text(size: 10pt, smallcaps(if is-odd { chapter-title } else {
-        section-title
-      })),
-    )
+    if booklet {
+      // Two-page spread: chapter title on recto (right), section on verso (left).
+      let is-odd = calc.odd(pg)
+      align(
+        if is-odd { right } else { left },
+        text(size: 10pt, smallcaps(if is-odd { chapter-title } else {
+          section-title
+        })),
+      )
+    } else {
+      // Single stream: chapter title consistently on every page.
+      align(left, text(size: 10pt, smallcaps(chapter-title)))
+    }
     v(3pt)
     line(length: 100%, stroke: 0.4pt)
   }
@@ -165,7 +180,14 @@
   // ────
   set page(
     paper: "a5",
-    margin: (top: 20mm, bottom: 20mm, inside: 22mm, outside: 18mm),
+    // Both modes keep a 108 mm content width (148 − 22 − 18 = 148 − 20 − 20),
+    // so line breaking and margin-note widths are identical. Booklet mirrors a
+    // wider inside (binding) margin per spread; digital is symmetric.
+    margin: if booklet {
+      (top: 20mm, bottom: 20mm, inside: 22mm, outside: 18mm)
+    } else {
+      (top: 20mm, bottom: 20mm, left: 20mm, right: 20mm)
+    },
     header: make-header(),
     footer: context {
       align(center, text(size: 12pt, counter(page).display()))
@@ -178,7 +200,8 @@
   let par-indent = 1.5em
   set par(justify: true, first-line-indent: (amount: par-indent, all: false))
   set list(indent: 1em)
-  show link: set text(fill: blue)
+  // Blue clickable links in the digital PDF; plain black in print.
+  show link: set text(fill: if booklet { black } else { blue })
 
   // Figures & Tables
   // ────────────────
@@ -203,7 +226,7 @@
 
   // Level 1: gray number + gray vertical rule + unjustified title
   show heading.where(level: 1): it => {
-    pagebreak(weak: true, to: "odd")
+    open-section()
     v(2em)
     if it.numbering != none {
       set par(justify: false)
@@ -252,42 +275,9 @@
     h(1em)
   }
 
-  // Title Pages
-  // ───────────
-  let series-title-page() = page(numbering: none, header: none, footer: none, {
-    v(1fr)
-    align(center, {
-      text(size: 12pt, style: "italic", [Series in Microelectronics])
-      if volume != none {
-        linebreak()
-        text(size: 11pt, [Volume #volume])
-      }
-    })
-    v(2fr)
-    set text(size: 9pt)
-    [*Editors:*\ ]
-    v(0.4em)
-    [Prof. Dr. Luca Benini (ETH Zurich)\ ]
-    [Prof. Dr. Frank K. Gürkaynak (ETH Zurich)]
-    v(1em)
-    [The series "Series in Microelectronics" is published by the Electronics Laboratory
-      (IfE) of ETH Zurich. The volumes are available through Hartung-Gorre Verlag, Konstanz.]
-    v(2fr)
-    [*Bibliografische Information der Deutschen Nationalbibliothek*\ ]
-    [Die Deutsche Nationalbibliothek verzeichnet diese Publikation in der Deutschen
-      Nationalbibliografie; detaillierte bibliografische Daten sind im Internet über
-      #link("http://dnb.d-nb.de")[http://dnb.d-nb.de] abrufbar.]
-    v(0.5em)
-    [© #if published != none { published } else if year != none { str(year) } else { "20XX" }
-      #if author != none { author }]
-    v(0.5em)
-    if isbn != none [ISBN #isbn\ ]
-    if isbn-long != none [ISBN #isbn-long\ ]
-    [ISSN 0179-0307]
-    v(1fr)
-  })
-
-  let official-title-page() = page(
+  // Title Page
+  // ──────────
+  let title-page() = page(
     numbering: none,
     header: none,
     footer: none,
@@ -329,14 +319,14 @@
   // Front Matter
   // ────────────
   set page(numbering: "i")
-  if mode == "series" { series-title-page() } else { official-title-page() }
+  title-page()
   counter(page).update(1)
 
-  // Front-matter sections rely on the level-1 heading rule's
-  // `pagebreak(weak: true, to: "odd")` to open on a recto page, so each is a
-  // plain block (not `page(…)`) — wrapping in `page(…)` would stack a second
-  // page break on top of the heading's and leave extra blank pages. Sections
-  // without a heading (placeholders, copyright notice) get an explicit break.
+  // Front-matter sections rely on the level-1 heading rule's `open-section()`
+  // call to open a new page (recto in booklet mode), so each is a plain block
+  // (not `page(…)`) — wrapping in `page(…)` would stack a second page break on
+  // top of the heading's and leave extra blank pages. Sections without a
+  // heading (placeholders, copyright notice) call `open-section()` explicitly.
   {
     show heading: set heading(numbering: none, outlined: false)
     if acknowledgements != none {
@@ -360,7 +350,7 @@
     }
   } else {
     {
-      pagebreak(weak: true, to: "odd")
+      open-section()
       show heading: set heading(numbering: none, outlined: false)
       placeholder(
         title: "Add Abstracts",
@@ -372,7 +362,7 @@
 
   if copyright-notice == auto {
     {
-      pagebreak(weak: true, to: "odd")
+      open-section()
       task(title: "Copyright Notices for Reprinted Material")[
         If any chapter of this thesis is based on or reprints a previously published
         paper, copyright notices are required by the publisher. For *IEEE publications*:
@@ -413,7 +403,7 @@
     }
   } else if copyright-notice != none {
     {
-      pagebreak(weak: true, to: "odd")
+      open-section()
       show heading: set heading(numbering: none, outlined: false)
       copyright-notice
     }

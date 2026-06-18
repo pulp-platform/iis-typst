@@ -26,7 +26,7 @@ Or add it to an existing project:
   supervisor: "Prof. Dr. Supervisor Name",
   co-examiners: ("Prof. Dr. Co-Examiner Name",),
   year: 2026,
-  mode: "official",
+  mode: "digital",
   acknowledgements: include "chapters/acknowledgements.typ",
   abstracts: (
     include "chapters/abstract_en.typ",
@@ -47,8 +47,14 @@ Or add it to an existing project:
 
 ## Render modes
 
-- `mode: "official"` — for submission to ETH (grey cover, no ISBN)
-- `mode: "series"` — for the Hartung-Gorre publication copy (requires `volume`, `isbn`, `isbn-long`, `published`)
+- `mode: "digital"` (default) — single-stream PDF for the research collection:
+  symmetric margins, no blank filler pages, clickable blue links, and a fixed
+  running header.
+- `mode: "booklet"` — print-ready copy: mirrored binding margins, chapters and
+  front-matter sections opening on recto (odd) pages with blank versos where
+  needed, black links, and an alternating recto/verso header.
+
+Both modes keep the same 108 mm content width, so line breaking is identical.
 
 ## Parameters
 
@@ -62,7 +68,7 @@ Or add it to an existing project:
 | `supervisor` | string | Main supervisor |
 | `co-examiners` | array | Co-examiner names |
 | `year` | int | Year of examination |
-| `mode` | string | `"official"` or `"series"` |
+| `mode` | string | `"digital"` (default) or `"booklet"` |
 | `acknowledgements` | content | Acknowledgements section |
 | `abstracts` | array | English and German abstracts |
 | `acronyms` | dict | Acronym definitions for acrostiche |

@@ -19,14 +19,9 @@
   co-examiners: ("Prof. Dr. Co-Examiner Name",),
   year: 2026,
 
-  // Render mode
-  mode: "official", // Switch to "series" for the Hartung-Gorre publication copy
-
-  // Series mode extras (ignored when mode: "official")
-  // volume: 42,
-  // isbn: "3-86628-XXX-X",
-  // isbn-long: "978-3-86628-XXX-X",
-  // published: "2026",
+  // Render mode: "digital" (research-collection PDF) or "booklet" (print copy
+  // with binding margins and recto chapter starts).
+  mode: "digital",
 
   // Front matter
   acknowledgements: include "chapters/acknowledgements.typ",
