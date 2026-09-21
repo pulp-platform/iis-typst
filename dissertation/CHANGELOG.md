@@ -12,11 +12,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `bleed`: page bleed parameter for print trimming (defaults to `0mm`). Expands
   page dimensions and margins equally so full-bleed elements extend beyond the
   trim line without shifting the text block.
+- `round-pages-to`: target page-count multiple for final document padding in
+  `"booklet"` mode (defaults to `2`).
 - `ieee-reprint-notice`: bundled, ready-to-use IEEE reprint statement for ETH
   Zurich theses. Pass it to `copyright-notice` instead of hand-writing the text.
 
 ### Changed
 
+- `"booklet"` mode now pads the document with unnumbered blank pages until the
+  total page count is a multiple of `round-pages-to` (default `2`). This ensures
+  proper double-sided leaf parity and accommodates signature-based print binding
+  (e.g., multiples of 4).
 - Reworked render modes around the output medium: `mode` is now `"digital"`
   (default) or `"booklet"`, replacing `"official"`/`"series"`. `"digital"` uses
   symmetric margins, drops blank filler pages, keeps clickable blue links, and a
