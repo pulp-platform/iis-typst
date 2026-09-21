@@ -72,6 +72,11 @@
   /// size and its position relative to the trim edge remain unchanged.
   /// Leave at `0mm` unless required by your print shop.
   bleed: 0mm,
+  /// Target multiple for the total page count in `"booklet"` mode.
+  /// Pads the document with unnumbered blank pages at the end until the total
+  /// page count is divisible by this value. Defaults to `2` (physical leaves
+  /// are double-sided); use `4` or your print shop's signature size if required.
+  round-pages-to: 2,
   /// Abstracts array. Each entry is content (typically an `include` call).
   /// The heading is defined inside each file itself.
   /// Example: abstracts: (
@@ -512,5 +517,22 @@
       heading(level: 1)[Curriculum Vitae]
     }
     cv
+  }
+
+  // Querying total page count directly within the document creates a circular
+  // dependency. Mark the end of content instead to calculate trailing blank pages.
+  // Padding pages carry no page number, matching blank versos between chapters.
+  [#metadata(none)<dissertation-content-end>]
+  if booklet and round-pages-to > 1 {
+    context {
+      let last = query(<dissertation-content-end>).first().location().page()
+      let short = calc.rem(
+        round-pages-to - calc.rem(last, round-pages-to),
+        round-pages-to,
+      )
+      for _ in range(short) {
+        page(header: none, footer: none, numbering: none, hide[.])
+      }
+    }
   }
 }
