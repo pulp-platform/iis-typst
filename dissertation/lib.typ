@@ -67,6 +67,11 @@
   ///   front-matter sections opening on recto (odd) pages with a blank verso
   ///   where parity requires it, and black links.
   mode: "digital",
+  /// Bleed margin added to all page edges for print trimming (typically `3mm`).
+  /// Margins are automatically expanded by the same amount so the text block
+  /// size and its position relative to the trim edge remain unchanged.
+  /// Leave at `0mm` unless required by your print shop.
+  bleed: 0mm,
   /// Abstracts array. Each entry is content (typically an `include` call).
   /// The heading is defined inside each file itself.
   /// Example: abstracts: (
@@ -178,15 +183,28 @@
 
   // Page
   // ────
+  // Base A5 dimensions expanded by bleed. Margins expand correspondingly so the
+  // text block position remains fixed relative to the trim line.
   set page(
-    paper: "a5",
+    width: 148mm + 2 * bleed,
+    height: 210mm + 2 * bleed,
     // Both modes keep a 108 mm content width (148 − 22 − 18 = 148 − 20 − 20),
     // so line breaking and margin-note widths are identical. Booklet mirrors a
     // wider inside (binding) margin per spread; digital is symmetric.
     margin: if booklet {
-      (top: 20mm, bottom: 20mm, inside: 22mm, outside: 18mm)
+      (
+        top: 20mm + bleed,
+        bottom: 20mm + bleed,
+        inside: 22mm + bleed,
+        outside: 18mm + bleed,
+      )
     } else {
-      (top: 20mm, bottom: 20mm, left: 20mm, right: 20mm)
+      (
+        top: 20mm + bleed,
+        bottom: 20mm + bleed,
+        left: 20mm + bleed,
+        right: 20mm + bleed,
+      )
     },
     header: make-header(),
     footer: context {
