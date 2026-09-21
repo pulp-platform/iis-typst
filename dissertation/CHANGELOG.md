@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `bleed`: page bleed parameter for print trimming (defaults to `0mm`). Expands
+  page dimensions and margins equally so full-bleed elements extend beyond the
+  trim line without shifting the text block.
 - `ieee-reprint-notice`: bundled, ready-to-use IEEE reprint statement for ETH
   Zurich theses. Pass it to `copyright-notice` instead of hand-writing the text.
 
