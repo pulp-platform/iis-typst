@@ -16,7 +16,7 @@ typst init @preview/ethz-iis-assignment
 Or import directly:
 
 ```typst
-#import "@preview/ethz-iis-assignment:1.0.0": assignment
+#import "@preview/ethz-iis-assignment:1.0.1": assignment
 
 #show: assignment.with(
   projecttype: "master",

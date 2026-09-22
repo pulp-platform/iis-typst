@@ -1,4 +1,4 @@
-#import "@preview/ethz-iis-assignment:1.0.0": *
+#import "@preview/ethz-iis-assignment:1.0.1": *
 
 #show: assignment.with(
   projecttype: "master",
