@@ -59,10 +59,11 @@ fmt:
     typstyle -i **/*.typ
 
 
-# Bump version — updates typst.toml and import strings, commits, and pushes
+# Bump version — updates typst.toml and import strings, commits, and pushes.
+# Previews by default; pass --execute / -x to actually apply, commit, and push.
 [arg('ver_type', pattern='major|minor|patch')]
-[arg('dry_run', long='dry-run', short='n', value='true')]
-bump pkg ver_type dry_run:
+[arg('execute', long='execute', short='x', value='true')]
+bump pkg ver_type execute='false':
     #!/usr/bin/env sh
     set -e
     current=$(grep '^version' {{pkg}}/typst.toml | sed 's/version = "\(.*\)"/\1/')
@@ -75,38 +76,36 @@ bump pkg ver_type dry_run:
         patch) patch=$((patch + 1)) ;;
     esac
     new_ver="$major.$minor.$patch"
-    dry="{{dry_run}}"
-    run() { if [ -n "$dry" ]; then echo "🙈 $*"; else "$@"; fi; }
+    run() { if [ "{{execute}}" = true ]; then "$@"; else echo "🙈 $*"; fi; }
+    edit() { f=; for a in "$@"; do f=$a; done; run sed -i.bak "$@"; [ "{{execute}}" = true ] && rm -f "$f.bak"; return 0; }
     echo "🔖 Bumping {{pkg}} $current → $new_ver"
-    run sed -i.bak "s/version = \"$current\"/version = \"$new_ver\"/" {{pkg}}/typst.toml
-    [ -z "$dry" ] && rm {{pkg}}/typst.toml.bak
+    edit "s/version = \"$current\"/version = \"$new_ver\"/" {{pkg}}/typst.toml
     for f in $(find {{pkg}}/template -name '*.typ'); do
-        run sed -i.bak "s|ethz-iis-{{pkg}}:$current|ethz-iis-{{pkg}}:$new_ver|g" "$f"
-        [ -z "$dry" ] && rm "$f.bak"
+        edit "s|ethz-iis-{{pkg}}:$current|ethz-iis-{{pkg}}:$new_ver|g" "$f"
     done
     if [ -f {{pkg}}/README.md ]; then
-        run sed -i.bak "s|ethz-iis-{{pkg}}:$current|ethz-iis-{{pkg}}:$new_ver|g" {{pkg}}/README.md
-        [ -z "$dry" ] && rm {{pkg}}/README.md.bak
+        edit "s|ethz-iis-{{pkg}}:$current|ethz-iis-{{pkg}}:$new_ver|g" {{pkg}}/README.md
     fi
     run git add {{pkg}}/
-    run git commit -m "{{pkg}}: bump to v$new_ver"
+    run git commit -m "chore({{pkg}}): bump to v$new_ver"
     run git push
     echo "✅ Bumped — run 'just prepare {{pkg}} <fork>' then 'just release {{pkg}}' after PR is accepted"
 
-# Stamp CHANGELOG, tag, and push — run after the Typst Universe PR is accepted
-[arg('dry_run', long='dry-run', short='n', value='true')]
-release pkg dry_run:
+# Stamp CHANGELOG, tag, and push — run after the Typst Universe PR is accepted.
+# Previews by default; pass --execute / -x to actually apply, commit, tag, and push.
+[arg('execute', long='execute', short='x', value='true')]
+release pkg execute='false':
     #!/usr/bin/env sh
     set -e
     ver=$(grep '^version' {{pkg}}/typst.toml | sed 's/version = "\(.*\)"/\1/')
     rel_date=$(date +%Y-%m-%d)
-    dry="{{dry_run}}"
-    run() { if [ -n "$dry" ]; then echo "🙈 $*"; else "$@"; fi; }
+    run() { if [ "{{execute}}" = true ]; then "$@"; else echo "🙈 $*"; fi; }
+    # edit [sed-flags...] <expr> <file> — edits in place, removing the backup only on a real run
+    edit() { f=; for a in "$@"; do f=$a; done; run sed -i.bak "$@"; [ "{{execute}}" = true ] && rm -f "$f.bak"; return 0; }
     echo "📝 Stamping CHANGELOG for {{pkg}} v$ver"
-    run sed -i.bak -E "s/## (\[Unreleased\]|Unreleased)/## v$ver — $rel_date/" {{pkg}}/CHANGELOG.md
-    [ -z "$dry" ] && rm {{pkg}}/CHANGELOG.md.bak
+    edit -E "s/## (\[Unreleased\]|Unreleased)/## v$ver — $rel_date/" {{pkg}}/CHANGELOG.md
     run git add {{pkg}}/CHANGELOG.md
-    run git commit -m "{{pkg}}: release v$ver"
+    run git commit -m "chore({{pkg}}): release v$ver"
     echo "🚀 Tagging {{pkg}} v$ver"
     run git tag "{{pkg}}/v$ver"
     run git push --follow-tags

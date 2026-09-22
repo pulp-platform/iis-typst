@@ -31,10 +31,11 @@ git checkout main
 
 This only needs to be done once per machine.
 
-> [!TIP]
-> Both `just bump` and `just release` support a `--dry-run` flag (short: `-n`)
-> that prints every command without making any changes — useful for a sanity check
-> before committing.
+> [!IMPORTANT]
+> `just bump` and `just release` only *preview* by default: they print every
+> command without touching the working tree. Pass `--execute` (short: `-x`) to
+> actually apply the changes, commit, and push. Run each one without the flag
+> first as a sanity check.
 
 ## Steps
 
@@ -66,10 +67,11 @@ just thumbnail <pkg>
 ### 4. Bump the version
 
 ```sh
-just bump <pkg> minor   # or major / patch
+just bump <pkg> minor      # preview — or major / patch
+just bump <pkg> minor -x   # apply
 ```
 
-This computes the new version by incrementing the chosen component, updates
+With `-x`, this computes the new version by incrementing the chosen component, updates
 `typst.toml` and all import strings, commits with message `<pkg>: bump to v<version>`,
 and pushes to `main`. The CHANGELOG is not touched at this point.
 
@@ -98,10 +100,11 @@ for the PR description. **Wait for the PR to be accepted before continuing.**
 Once the Typst Universe PR is accepted, stamp the changelog and tag:
 
 ```sh
-just release <pkg>
+just release <pkg>      # preview
+just release <pkg> -x   # apply
 ```
 
-This replaces `## [Unreleased]` in `<pkg>/CHANGELOG.md` with the current version
+With `-x`, this replaces `## [Unreleased]` in `<pkg>/CHANGELOG.md` with the current version
 and today's date, commits, tags `<pkg>/v<version>` (e.g. `thesis/v1.1.0`), and
 pushes the commit and tag together. Per-package tags keep the history clean when
 packages are released independently.
