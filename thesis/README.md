@@ -16,7 +16,7 @@ typst init @preview/ethz-iis-thesis
 Or import directly:
 
 ```typst
-#import "@preview/ethz-iis-thesis:1.0.0": thesis
+#import "@preview/ethz-iis-thesis:1.0.1": thesis
 
 #show: thesis.with(
   title: "Title of Your Thesis",

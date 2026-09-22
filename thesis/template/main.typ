@@ -1,4 +1,4 @@
-#import "@preview/ethz-iis-thesis:1.0.0": *
+#import "@preview/ethz-iis-thesis:1.0.1": *
 #import "acronyms.typ": acronyms
 #import "@preview/cetz:0.4.2": canvas, draw
 #import "@preview/finite:0.5.1": automaton
