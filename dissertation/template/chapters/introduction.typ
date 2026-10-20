@@ -1,4 +1,4 @@
-#import "@preview/ethz-iis-dissertation:1.0.0": (
+#import "@preview/ethz-iis-dissertation:2.0.0": (
   acr, acrfull, acrpl, chapter-short,
 )
 

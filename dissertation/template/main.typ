@@ -1,7 +1,7 @@
 // PhD Thesis example — compile with:
 //   typst compile main.typ
 
-#import "@preview/ethz-iis-dissertation:1.0.0": (
+#import "@preview/ethz-iis-dissertation:2.0.0": (
   acr, acrfull, acrpl, dissertation, typst-guide,
 )
 #import "acronyms.typ": acronyms

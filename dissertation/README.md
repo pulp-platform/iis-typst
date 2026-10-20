@@ -16,7 +16,7 @@ typst init @preview/ethz-iis-dissertation
 Or add it to an existing project:
 
 ```typst
-#import "@preview/ethz-iis-dissertation:1.0.0": dissertation, chapter-short
+#import "@preview/ethz-iis-dissertation:2.0.0": dissertation, chapter-short
 
 #show: dissertation.with(
   title: "Title of Your Dissertation",
